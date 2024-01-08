@@ -4,34 +4,6 @@ import java.util.Random;
 
 public class MatrixGenerator {
 
-    private enum Direction {
-        EAST(1, 0), SOUTH(0, 1), SOUTH_EAST(1, 1), WEST(-1, 0),
-        NORTH(0, -1), NORTH_WEST(-1, -1), NORTH_EAST(1, -1),
-        SOUTH_WEST(-1, 1);
-    
-        private final int x;
-        private final int y;
-    
-        Direction(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    
-        public int getX() {
-            return x;
-        }
-    
-        public int getY() {
-            return y;
-        }
-    
-        private static final Random random = new Random();
-
-        public static Direction getRandomDirection() {
-            return values()[random.nextInt(values().length)];
-        }
-    }
-
     private boolean[][] isInUse;
     private static char[][] matrix;
     private static final int maxPlacementAttempts = 10;
@@ -48,10 +20,13 @@ public class MatrixGenerator {
             boolean placementSuccess = false;
             while (attemptsMade < maxPlacementAttempts && !placementSuccess) {
                 // randomly generate valid coordinates where the word will fit in the grid
+                Coordinate startPos = getRandomPosition(placementDir, word);
                 // check that there is no interference with words already placed
-
-                // in case of interference we go again
-                // otherwise place word -> make sure to also change inUse
+                if (isPositionValid(startPos, placementDir, maxLength)) {
+                    placeWord(startPos, placementDir, word);
+                    placementSuccess = true;
+                }
+                attemptsMade++;
             }
             if (!placementSuccess) {
                 return Optional.empty();
@@ -61,17 +36,33 @@ public class MatrixGenerator {
         return Optional.of(new Matrix(matrix));
     }
 
-    private boolean isPositionValid(int x, int y, Direction direction, int length) {
+    private static boolean isPositionValid(Coordinate start, Direction direction, int length) {
         return false;
     }
 
-    // might create a Coordinate type to make it more readable and self explanatory??
-    private int[] getRandomPosition(Direction direction, String word) {
-        return new int[2];
+    private static Coordinate getRandomPosition(Direction direction, String word) {
+        Random random = new Random();
+        int[] xBound = getRangeBound(word.length() * direction.getX());
+        int[] yBound = getRangeBound(word.length() * direction.getY());
+        int xOrd = random.nextInt(Math.max(xBound[0], xBound[1]) - Math.min(xBound[0], xBound[1])) + Math.min(xBound[0], xBound[1]);
+        int yOrd = random.nextInt(Math.max(yBound[0], yBound[1]) - Math.min(yBound[0], yBound[1])) + Math.min(yBound[0], yBound[1]);
+        return new Coordinate(xOrd, yOrd);
     }
 
-    private void placeWord(int x, int y, Direction dir, String word) {
+    private static void placeWord(Coordinate start, Direction dir, String word) {
         // change word matrix and inUse boolean matrix
+    }
+
+    private static int[] getRangeBound(int bound) {
+        int[] ret = new int[2];
+        if (bound < 0) {
+            ret[0] = matrix.length;
+            ret[1] = bound * -1;
+        } else {
+            ret[0] = 0;
+            ret[1] = matrix.length - bound + 1;
+        }
+        return ret;
     }
 
 }
