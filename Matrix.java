@@ -3,15 +3,14 @@ public class Matrix {
     private char[][] matrix;
 
     public Matrix(char[][] matrix) {
-
+        this.matrix = matrix;
     }
 
     @Override
     public String toString() {
         StringBuilder resultString = new StringBuilder();
 
-        // Add column headings
-        resultString.append("    ");
+        resultString.append("     ");
         for (int col = 0; col < matrix[0].length; col++) {
             resultString.append(String.format("%3d", col + 1));
         }
@@ -26,6 +25,10 @@ public class Matrix {
         }
 
         return resultString.toString();
+    }
+
+    public boolean wordSearch(Direction direction, String word, Coordinate start) {
+        return false;
     }
     
 
