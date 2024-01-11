@@ -4,20 +4,19 @@ import java.util.Optional;
 import java.util.Random;
 
 public class MatrixGenerator {
+    
+    private boolean[][] isInUse;
 
-    // would it have been better if I had only the matrix and just filled it with '\0' instead of using double the
-    // memory for a boolean matrix
-    private static boolean[][] isInUse;
+    private char[][] matrix;
 
-    private static char[][] matrix;
+    private int maxPlacementAttempts;
 
-    private static int maxPlacementAttempts;
+    public MatrixGenerator() {
 
-    public static Optional<Matrix> generateMatrix(List<String> words) throws NoSuchElementException {
-        // what would be the best practise with the following line when I'm getting the max length of the word list
-        // In my main function I make sure the list isn't empty so the optional will never be empty but 
-        // it's not good style to rely on other functions doing the right thing so I threw an error if the optional wasy empty
-        // is there a better way to handle this?
+    };
+
+    public Optional<Matrix> generateMatrix(List<String> words) throws NoSuchElementException {
+        
         int maxLength = words.stream().mapToInt(word -> word.length()).max().orElseThrow(() -> new NoSuchElementException());
         int matrixSize = Math.max(maxLength * 2, words.size() * 2);
         maxPlacementAttempts = matrixSize * 2;
@@ -47,9 +46,9 @@ public class MatrixGenerator {
     }
 
     // makes sure none of the coordinates the word will fall on are already in use
-    private static boolean isPositionValid(Coordinate start, Direction direction, int length) {
-        int xPos = start.getX();
-        int yPos = start.getY();
+    private boolean isPositionValid(Coordinate start, Direction direction, int length) {
+        int xPos = start.xOrdinate();
+        int yPos = start.yOrdinate();
         while (length > 0) {
             if (isInUse[xPos][yPos]) return false;
             xPos += direction.getX();
@@ -59,8 +58,8 @@ public class MatrixGenerator {
         return true;
     }
 
-    // given the x and y bounds get a random coordinate where we can place beginning of the word
-    private static Coordinate getRandomPosition(Direction direction, String word) {
+    // given the x and y bounds get a random coordinate where we can place beginning of the word'
+    private Coordinate getRandomPosition(Direction direction, String word) {
         Random random = new Random();
         int[] xBound = getRangeBound(word.length() * direction.getX());
         int[] yBound = getRangeBound(word.length() * direction.getY());
@@ -70,9 +69,9 @@ public class MatrixGenerator {
     }
 
     // places word in the matrix
-    private static void placeWord(Coordinate start, Direction dir, String word) {
-        int xPos = start.getX();
-        int yPos = start.getY();
+    private void placeWord(Coordinate start, Direction dir, String word) {
+        int xPos = start.xOrdinate();
+        int yPos = start.yOrdinate();
         for (char ch : word.toCharArray()) {
             matrix[xPos][yPos] = ch;
             isInUse[xPos][yPos] = true;
@@ -82,7 +81,7 @@ public class MatrixGenerator {
     }
 
     // gets the bounds between for both x and y between which we can fit the word
-    private static int[] getRangeBound(int bound) {
+    private int[] getRangeBound(int bound) {
         int[] ret = new int[2];
         if (bound < 0) {
             ret[0] = matrix.length;
@@ -95,7 +94,7 @@ public class MatrixGenerator {
     }
 
     // places random letters at all the remaining coordinates
-    private static void placeRandomLetters() {
+    private void placeRandomLetters() {
         Random random = new Random();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
