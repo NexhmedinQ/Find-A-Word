@@ -1,9 +1,10 @@
 import java.util.HashSet;
 import java.util.List;
 
-public class WordList {
+public class WordSet {
     private HashSet<String> words;
-    public WordList(HashSet<String> words) {
+
+    public WordSet(HashSet<String> words) {
         this.words = words; 
     }
 
