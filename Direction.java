@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 public enum Direction {
@@ -21,7 +24,19 @@ public enum Direction {
         return y;
     }
 
+    private static final Map<String, Direction> directionMap = new HashMap<>();
+
+    static {
+        for (Direction direction : values()) {
+            directionMap.put(direction.name().toLowerCase(), direction);
+        }
+    }
+
     private static final Random random = new Random();
+
+    public static Optional<Direction> getDirection(String dirString) {
+        return directionMap.get(dirString) == null ? Optional.empty() : Optional.of(directionMap.get(dirString));
+    }
 
     public static Direction getRandomDirection() {
         return values()[random.nextInt(values().length)];
