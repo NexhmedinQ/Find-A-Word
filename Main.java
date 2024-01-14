@@ -7,8 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
-    WordSet wordSet;
-    MatrixGenerator generator;
+    private final WordSet wordSet;
+    private final MatrixGenerator generator;
 
     public Main(WordSet wordList, MatrixGenerator generator) {
         this.generator = generator;
