@@ -28,7 +28,7 @@ public enum Direction {
 
     static {
         for (Direction direction : values()) {
-            directionMap.put(direction.name().toLowerCase(), direction);
+            directionMap.put(direction.name(), direction);
         }
     }
 

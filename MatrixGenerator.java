@@ -88,7 +88,7 @@ public class MatrixGenerator {
             ret[1] = bound * -1;
         } else {
             ret[0] = 0;
-            ret[1] = matrix.length - bound + 1;
+            ret[1] = matrix.length - bound;
         }
         return ret;
     }

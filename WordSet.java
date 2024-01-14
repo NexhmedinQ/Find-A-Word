@@ -15,4 +15,14 @@ public class WordSet {
     public boolean containsWord(String word) {
         return wordSet.contains(word);
     }
+
+    public HashSet<String> getWordSet() {
+        return new HashSet<>(wordSet);
+    }
+
+    @Override
+    public String toString() {
+        List<String> wordList = setToList();
+        return String.join(" ", wordList);
+    }
 }
